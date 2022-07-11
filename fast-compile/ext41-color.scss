@@ -1,0 +1,1432 @@
+$base-gradient: 'matte' !default;
+@mixin background-image($stuff) {
+background-image: $stuff;
+}
+
+@mixin background-gradient($bg-color, $type: $base-gradient, $direction: top) {
+    background-image: none;
+    background-color: $bg-color;
+
+    @if $base-gradient != null and $bg-color != transparent {
+        //color_stops
+        @if type-of($type) == "list" {
+            @include background-image(linear-gradient($direction, $type));
+        }
+
+        //default gradients
+        @else if $type == bevel {
+            @include background-image(linear-gradient($direction, color_stops(
+                lighten($bg-color, 15%),
+                lighten($bg-color, 8%) 30%,
+                $bg-color 65%,
+                darken($bg-color, 6%)
+            )));
+        } @else if $type == glossy {
+            @include background-image(linear-gradient($direction, color_stops(lighten($bg-color, 15%), lighten($bg-color, 5%) 50%, $bg-color 51%, darken($bg-color, 5%))));
+        } @else if $type == recessed {
+            @include background-image(linear-gradient($direction, color_stops(darken($bg-color, 10%), darken($bg-color, 5%) 10%, $bg-color 65%, lighten($bg-color, .5%))));
+        } @else if $type == matte {
+            @include background-image(linear-gradient($direction, color_stops(lighten($bg-color, 3%), darken($bg-color, 4%))));
+        } @else if $type == matte-reverse {
+            @include background-image(linear-gradient($direction, color_stops(darken($bg-color, 6%), lighten($bg-color, 4%))));
+        } @else if $type == glossy-toolbar {
+            @include background-image(linear-gradient($direction, color_stops(#F0F5FA, #DAE6F4 2%, #CEDDEF)));
+        }
+
+        //ext3.3 gradients
+        @else if $type == panel-header {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: -0.857deg, $saturation: -1.63%, $lightness: 3.529%),
+                adjust-color($bg-color, $hue: 0.158deg, $saturation: -1.21%, $lightness: 0.392%) 45%,
+                adjust-color($bg-color, $hue: 1.154deg, $saturation: 0.607%, $lightness: -7.647%) 46%,
+                adjust-color($bg-color, $hue: 1.154deg, $saturation: 0.607%, $lightness: -7.647%) 50%,
+                adjust-color($bg-color, $hue: 1.444deg, $saturation: -1.136%, $lightness: -4.706%) 51%,
+                $bg-color
+            )));
+        } @else if $type == tabbar {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: 0.0deg, $saturation: 1.604%, $lightness: 4.706%),
+                $bg-color
+            )));
+        } @else if $type == tab {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: 1.382deg, $saturation: -18.571%, $lightness: -4.902%),
+                adjust-color($bg-color, $hue: 0.43deg, $saturation: -10.311%, $lightness: -2.157%) 25%,
+                $bg-color 45%
+            )));
+        } @else if $type == tab-active {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: -212.903deg, $saturation: -88.571%, $lightness: 6.863%),
+                adjust-color($bg-color, $hue: 0.43deg, $saturation: -6.753%, $lightness: 4.706%) 25%,
+                $bg-color 45%
+            )));
+        } @else if $type == tab-over {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: 4.462deg, $saturation: -9.524%, $lightness: -3.725%),
+                adjust-color($bg-color, $hue: 2.272deg, $saturation: 0.0%, $lightness: -1.569%) 25%,
+                $bg-color 45%
+            )));
+        } @else if $type == tab-disabled {
+            @include background-image(linear-gradient($direction, color_stops(
+                $bg-color,
+                adjust-color($bg-color, $hue: -0.267deg, $saturation: 18.571%, $lightness: 2.941%)
+            )));
+        } @else if $type == grid-header {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: 20.392%),
+                adjust-color($bg-color, $hue: 220.0deg, $saturation: 5.66%, $lightness: 12.353%)
+            )));
+        } @else if $type == grid-header-over {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: 0.175deg, $saturation: 0.967%, $lightness: 14.118%),
+                adjust-color($bg-color, $hue: 0.175deg, $saturation: 0.967%, $lightness: 14.118%) 39%,
+                adjust-color($bg-color, $hue: 0.372deg, $saturation: 0.101%, $lightness: 10.196%) 40%,
+                adjust-color($bg-color, $hue: 0.372deg, $saturation: 0.101%, $lightness: 10.196%)
+            )));
+        } @else if $type == grid-row-over {
+            @include background-image(linear-gradient($direction, color_stops(
+                adjust-color($bg-color, $hue: 0.175deg, $saturation: 0.967%, $lightness: 14.118%),
+                $bg-color
+            )));
+        } @else if $type == grid-cell-special {
+            @include background-image(linear-gradient(left, color_stops(
+                $bg-color,
+                darken($bg-color, 5)
+            )));
+        } @else if $type == glossy-button or $type == glossy-button-disabled {
+            @include background-image(linear-gradient($direction, color_stops(
+                $bg-color,
+                adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: -2.353%) 48%,
+                adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: -11.373%) 52%,
+                adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: -9.412%)
+            )));
+        } @else if $type == glossy-button-over {
+            @include background-image(linear-gradient($direction, color_stops(
+                $bg-color,
+                adjust-color($bg-color, $hue: 1.754deg, $saturation: 0.0%, $lightness: -2.157%) 48%,
+                adjust-color($bg-color, $hue: 5.833deg, $saturation: -35.135%, $lightness: -9.216%) 52%,
+                adjust-color($bg-color, $hue: 5.833deg, $saturation: -27.273%, $lightness: -7.647%)
+            )));
+        } @else if $type == glossy-button-pressed {
+            @include background-image(linear-gradient($direction, color_stops(
+                $bg-color,
+                adjust-color($bg-color, $hue: -1.839deg, $saturation: -2.18%, $lightness: 2.157%) 48%,
+                adjust-color($bg-color, $hue: -2.032deg, $saturation: 37.871%, $lightness: -4.706%) 52%,
+                adjust-color($bg-color, $hue: -1.641deg, $saturation: 36.301%, $lightness: -2.549%)
+            )));
+        }
+    }
+}
+
+
+
+
+$window-body-color: #000 !default;
+$toolbar-separator-highlight-color: #fff !default;
+$tab-color-disabled: #c3b3b3 !default;
+$tip-error-background-color: #fff !default;
+$tip-error-border-color: #a1311f !default;
+$tip-error-inner-border-color: #d87166 !default;
+$progress-text-color-front: #fff !default;
+$datepicker-today-item-border-color: darkred !default;
+$datepicker-item-border-color: #fff !default;
+$datepicker-item-color: #000 !default;
+$datepicker-monthpicker-color: #fff !default;
+$datepicker-background-color: #ffffff !default;
+$colorpicker-over-background-color: #deecfd !default;
+$colorpicker-over-border-color: #8bb8f3 !default;
+$colorpicker-item-border-color: #aca899 !default;
+$panel-body-color: #000 !default;
+$panel-body-background-color: #fff !default;
+$menu-text-color: #222 !default;
+$menu-separator-background-color: #FFF !default;
+$menu-separator-border-color: #E0E0E0 !default;
+$menu-background-color: #F0F0F0 !default;
+$loadmask-msg-inner-color: #222 !default;
+$loadmask-msg-inner-background-color: #eee !default;
+$accordion-header-color: #000 !default;
+$grid-grouped-header-background-color: #fff !default;
+$grid-row-wrap-border-color: #ededed !default;
+$grid-row-cell-border-color: $grid-row-wrap-border-color !default;
+$grid-row-cell-color: null !default;
+$grid-header-color: null !default;
+$form-trigger-border-bottom-color-pressed: null !default;
+$form-trigger-border-bottom-color-focus-over: null !default;
+$form-error-msg-color: #c0272b !default;
+$form-field-invalid-background-color: #fff !default;
+$form-field-background-color: #fff !default;
+$html-editor-background-color: $form-field-background-color !default;
+$form-field-invalid-border-color: #c30 !default;
+$form-field-border-color: #B5B8C8 !default;
+$html-editor-border-color: $form-field-border-color !default;
+$fieldset-border-color: $form-field-border-color !default;
+$form-trigger-border-bottom-color: $form-field-border-color !default;
+$form-field-empty-color: gray !default;
+$form-field-color: #000 !default;
+$focus-frame-color: rgb(21, 66, 139) !default;
+$css-shadow-background-color: #ccc !default;
+$color: #000 !default;
+$button-toolbar-color: #333 !default;
+$button-toolbar-color-disabled: lighten($button-toolbar-color, 35) !default;
+$button-toolbar-color-pressed: $button-toolbar-color !default;
+$button-toolbar-color-over: $button-toolbar-color !default;
+$button-toolbar-color-focus: $button-toolbar-color-over !default;
+$button-toolbar-background-gradient-color-stops-disabled: null !default;
+$button-toolbar-background-gradient-color-stops-pressed: null !default;
+$button-toolbar-background-gradient-color-stops-over: null !default;
+$button-toolbar-background-gradient-color-stops-focus: $button-toolbar-background-gradient-color-stops-over !default;
+$button-toolbar-background-gradient-color-stops: null !default;
+$button-toolbar-background-color-disabled: transparent !default;
+$button-toolbar-background-color: transparent !default;
+$button-toolbar-border-color-disabled: transparent !default;
+$button-toolbar-border-color: transparent !default;
+$button-default-color: #333 !default;
+$button-default-color-disabled: lighten($button-default-color, 35) !default;
+$button-default-color-pressed: $button-default-color !default;
+$button-default-color-over: $button-default-color !default;
+$button-default-color-focus: $button-default-color-over !default;
+$button-default-background-gradient-color-stops: null !default;
+$button-default-background-gradient-color-stops-disabled: $button-default-background-gradient-color-stops !default;
+$button-default-background-gradient-color-stops-pressed: $button-default-background-gradient-color-stops !default;
+$button-default-background-gradient-color-stops-over: $button-default-background-gradient-color-stops !default;
+$button-default-background-gradient-color-stops-focus: $button-default-background-gradient-color-stops-over !default;
+$neutral-color: #eeeeee !default;
+$tip-body-color: adjust-color($neutral-color, $hue: 0deg, $saturation: 0%, $lightness: -66.667%) !default;
+$tip-header-color: $tip-body-color !default;
+$tip-body-link-color: darken($tip-body-color, 10%) !default;
+$grid-row-cell-focus-background-color: adjust-color($neutral-color, $hue: 0deg, $saturation: 0%, $lightness: 0.392%) !default;
+$grid-row-cell-focus-border-color: adjust-color($neutral-color, $hue: 0deg, $saturation: 0%, $lightness: -6.667%) !default;
+$grid-row-cell-over-background-color: adjust-color($neutral-color, $hue: 0deg, $saturation: 0%, $lightness: 0.392%) !default;
+$grid-row-cell-over-border-color: adjust-color($neutral-color, $hue: 0deg, $saturation: 0%, $lightness: -6.667%) !default;
+$grid-header-border-color: $neutral-color !default;
+$button-default-base-color: adjust-color($neutral-color, $hue: 0deg, $saturation: -55.556%, $lightness: 12.745%) !default;
+$button-default-background-color: $button-default-base-color !default;
+$button-default-border-color: adjust-color($button-default-base-color, $hue: 0deg, $saturation: 0%, $lightness: -18.039%) !default;
+$base-color: #C0D4ED !default;
+$mix-color: desaturate(lighten($base-color, 37), 5) !default;
+$window-base-color: $base-color !default;
+$window-header-color: adjust-color($window-base-color, $hue: -2.451deg, $saturation: 38.889%, $lightness: -55.882%) !default;
+$window-body-background-color: adjust-color($window-base-color, $hue: 3.188deg, $saturation: 0.542%, $lightness: 7.843%) !default;
+$window-body-border-color: adjust-color($window-base-color, $hue: 0.844deg, $saturation: 7.644%, $lightness: -8.627%) !default;
+$window-background-color: adjust-color($window-base-color, $hue: 0.267deg, $saturation: -21.309%, $lightness: 1.569%) !default;
+$window-inner-border-color: adjust-color($window-base-color, $hue: 2.667deg, $saturation: 9.662%, $lightness: 11.373%) !default;
+$window-border-color: adjust-color($window-base-color, $hue: 0.952deg, $saturation: -32.377%, $lightness: -13.725%) !default;
+$toolbar-text-color: mix($mix-color, #000, 30) !default;
+$toolbar-separator-color: adjust-color($base-color, $hue: -1deg, $saturation: 100%, $lightness: -4.3%) !default;
+$toolbar-background-color: adjust-color($base-color, $hue: -1.333deg, $saturation: -3.831%, $lightness: 4.51%) !default;
+$toolbar-inner-border-color: lighten($toolbar-background-color, 5%) !default;
+$tab-border-color-disabled: adjust-color($base-color, $hue:0deg, $saturation: 6.349%, $lightness: -0.588%) !default;
+$tab-base-color-disabled: adjust-color($base-color, $hue: 0deg, $saturation: 15.873%, $lightness: 9.02%) !default;
+$tab-base-color: adjust-color($base-color, $hue: 0deg, $saturation: 33.016%, $lightness: 9.02%) !default;
+$tabbar-strip-background-color: $tab-base-color !default;
+$tab-inner-border-color: adjust-color($tab-base-color, $hue: 0deg, $saturation: -8.571%, $lightness: 8.941%) !default;
+$tab-border-color: adjust-color($tab-base-color, $hue:0deg, $saturation: -28.008%, $lightness: -20.98%) !default;
+$tab-border-color-active: $tab-border-color !default;
+$tab-border-color-over: $tab-border-color !default;
+$tab-color: adjust-color($tab-base-color, $hue: 0deg, $saturation: -45.589%, $lightness: -48.431%) !default;
+$tab-color-active: adjust-color($tab-color, $hue: 0deg, $saturation: 30.768%, $lightness: -13.333%) !default;
+$tab-color-over: $tab-color !default;
+$tab-base-color-active: $tab-base-color !default;
+$tab-base-color-over: adjust-color($tab-base-color, $hue: 0deg, $saturation: 11.429%, $lightness: 2.353%) !default;
+$tip-base-color: adjust-color($base-color, $hue: 2.121deg, $saturation: 44.444%, $lightness: 11.569%) !default;
+$tip-border-color: adjust-color($tip-base-color, $hue: -1.705deg, $saturation: -60.494%, $lightness: -27.451%) !default;
+$tip-background-color: $tip-base-color !default;
+$progress-bar-base-color: $base-color !default;
+$progress-text-color-back: adjust-color($progress-bar-base-color, $hue: 0deg, $saturation: -10.895%, $lightness: -43.725%) !default;
+$progress-bar-background-color: adjust-color($progress-bar-base-color, $hue: 0deg, $saturation: 8.187%, $lightness: -17.647%) !default;
+$progress-background-color: adjust-color($progress-bar-base-color, $hue: 0deg, $saturation: -11.37%, $lightness: 7.451%) !default;
+$progress-border-color: adjust-color($progress-bar-base-color, $hue: 0deg, $saturation: -3.08%, $lightness: -23.725%) !default;
+$datepicker-base-color: $base-color !default;
+$datepicker-monthpicker-item-color: adjust-color($datepicker-base-color, $hue: 3.785deg, $saturation: 18.194%, $lightness: -52.745%) !default;
+$datepicker-selected-item-background-color: adjust-color($datepicker-base-color, $hue: 0.267deg, $saturation: -4.535%, $lightness: 6.275%) !default;
+$datepicker-selected-item-border-color: adjust-color($datepicker-base-color, $hue: 0.853deg, $saturation: 5.008%, $lightness: -11.961%) !default;
+$datepicker-item-hover-background-color: adjust-color($datepicker-base-color, $hue: -0.606deg, $saturation: 38.73%, $lightness: 9.02%) !default;
+$datepicker-monthpicker-item-hover-background-color: $datepicker-item-hover-background-color !default;
+$datepicker-th-background-color: adjust-color($datepicker-base-color, $hue: -1.19deg, $saturation: 22.222%, $lightness: 8.824%) !default;
+$datepicker-footer-background-color: $datepicker-th-background-color !default;
+$datepicker-monthpicker-item-selected-background-color: $datepicker-footer-background-color !default;
+$datepicker-th-border-bottom-color: darken($datepicker-th-background-color, 10) !default;
+$datepicker-footer-border-top-color: $datepicker-th-border-bottom-color !default;
+$datepicker-th-color: adjust-color($datepicker-base-color, $hue: 5.586deg, $saturation: -4.167%, $lightness: -55.882%) !default;
+$datepicker-header-background-color: adjust-color($datepicker-base-color, $hue: 5.768deg, $saturation: 0.419%, $lightness: -52.941%) !default;
+$datepicker-border-color: adjust-color($datepicker-base-color, $hue: 5.926deg, $saturation: 4.444%, $lightness: -57.647%) !default;
+$menu-item-active-border-color: adjust-color($base-color, $saturation: 23%, $lightness: -3%) !default;
+$menu-item-active-background-color: adjust-color($base-color, $saturation: 25.397%, $lightness: 7.647%) !default;
+$loadmask-msg-inner-border-color: adjust-color($base-color, $hue: 1.111deg, $saturation: -14.017%, $lightness: -9.608%) !default;
+$panel-base-color: adjust-color($base-color, $hue: 0deg, $saturation: 0.542%, $lightness: 7.843%) !default;
+$tabbar-base-color: adjust-color($panel-base-color, $hue: 0deg, $saturation: -3.156%, $lightness: -5.294%) !default;
+$frame-base-color: $panel-base-color !default;
+$panel-frame-background-color: $frame-base-color !default;
+$panel-header-background-color: adjust-color($panel-base-color, $hue: 0deg, $saturation: 6.402%, $lightness: -4.51%) !default;
+$panel-header-color: adjust-color($panel-base-color, $hue: 0deg, $saturation: 38.347%, $lightness: -63.725%) !default;
+$panel-header-inner-border-color: adjust-color($panel-base-color, $hue: 0deg, $saturation: -6.098%, $lightness: 4.902%) !default;
+$loadmask-msg-background-color: $panel-base-color !default;
+$accordion-header-background-color: adjust-color($base-color, $saturation: 13%, $lightness: 7%) !default;
+$panel-border-color: adjust-color($base-color, $hue: 0deg, $saturation: 7.644%, $lightness: -8.627%) !default;
+$panel-frame-border-color: $panel-border-color !default;
+$panel-body-border-color: $panel-border-color !default;
+$toolbar-border-color: $panel-body-border-color !default;
+$panel-header-border-color: $panel-border-color !default;
+$tabbar-strip-border-color: $panel-header-border-color !default;
+$tabbar-border-color: $panel-header-border-color !default;
+$loadmask-msg-border-color: $panel-header-border-color !default;
+$grid-row-editor-border-color: $panel-border-color !default;
+$grid-row-editor-background-color: adjust-color($base-color, $hue: 1deg, $saturation: 11%, $lightness: 11%) !default;
+$grid-grouped-title-color: adjust-color($base-color, $hue: 0.952deg, $saturation: -6.718%, $lightness: -41.961%) !default;
+$grid-grouped-header-border-color: adjust-color($base-color, $hue: 0.844deg, $saturation: 7.644%, $lightness: -8.627%) !default;
+$grid-cell-with-col-lines-border-color: adjust-color($base-color, $hue: 0deg, $saturation: -55.556%, $lightness: -2.549%) !default;
+$grid-cell-special-over-background-color: adjust-color($base-color, $hue: -0.476deg, $saturation: 25.214%, $lightness: 5.686%) !default;
+$grid-row-cell-selected-background-color: adjust-color($base-color, $hue: 3.188deg, $saturation: 0.542%, $lightness: 7.843%) !default;
+$grid-row-cell-selected-border-color: adjust-color($base-color, $hue: 6.952deg, $saturation: 5.848%, $lightness: -6.471%) !default;
+$grid-header-over-border-color: adjust-color($base-color, $hue: -0.175deg, $saturation: 25.296%, $lightness: -2.549%) !default;
+$grid-header-over-background-color: $grid-header-over-border-color !default;
+$grid-base-color: $base-color !default;
+$grid-header-background-color: $grid-base-color !default;
+$fieldset-header-color: adjust-color($base-color, $hue: 3.785deg, $saturation: 18.194%, $lightness: -52.745%) !default;
+$form-trigger-border-bottom-color-focus: adjust-color($base-color, $hue: -4.322deg, $saturation: -1.065%, $lightness: -16.863%) !default;
+$form-trigger-border-bottom-color-over: adjust-color($base-color, $hue: -4.322deg, $saturation: -1.065%, $lightness: -16.863%) !default;
+$form-field-focus-border-color: adjust-color($base-color, $hue: -4.322deg, $saturation: -1.065%, $lightness: -16.863%) !default;
+$button-toolbar-background-color-pressed: adjust-color($base-color, $hue: -1.138deg, $saturation: -11.47%, $lightness: -2.353%) !default;
+$button-toolbar-background-color-over: adjust-color($base-color, $hue: -5deg, $saturation: 44.444%, $lightness: 8.824%) !default;
+$button-toolbar-background-color-focus: $button-toolbar-background-color-over !default;
+$button-toolbar-border-color-pressed: adjust-color($base-color, $hue: 0.721deg, $saturation: -17.014%, $lightness: -21.765%) !default;
+$button-toolbar-border-color-over: adjust-color($base-color, $hue: 0.084deg, $saturation: -9.891%, $lightness: -18.039%) !default;
+$button-toolbar-border-color-focus: $button-toolbar-border-color-over !default;
+$button-toolbar-base-color: adjust-color($base-color, $hue: -213.333deg, $saturation: -55.556%, $lightness: 3.333%) !default;
+$button-default-base-color-disabled: adjust-color($base-color, $hue: 0deg, $saturation: -55.556%, $lightness: 12.745%) !default;
+$button-default-background-color-disabled: $button-default-base-color-disabled !default;
+$button-default-border-color-disabled: adjust-color($button-default-base-color-disabled, $hue: 0deg, $saturation: 0%, $lightness: -8.627%) !default;
+$button-default-base-color-pressed: adjust-color($base-color, $hue: -0.725deg, $saturation: -9.556%, $lightness: -3.725%) !default;
+$button-default-background-color-pressed: $button-default-base-color-pressed !default;
+$button-default-border-color-pressed: adjust-color($button-default-base-color-pressed, $hue: 2.317deg, $saturation: 6.756%, $lightness: -5.294%) !default;
+$button-default-base-color-over: adjust-color($base-color, $hue: -6.667deg, $saturation: 44.444%, $lightness: 10.588%) !default;
+$button-default-background-color-over: $button-default-base-color-over !default;
+$button-default-background-color-focus: $button-default-background-color-over !default;
+$button-default-border-color-over: adjust-color($button-default-base-color-over, $hue: 8.177deg, $saturation: -28.283%, $lightness: -12.745%) !default;
+$button-default-border-color-focus: $button-default-border-color-over !default;
+$button-default-base-color-focus: $button-default-base-color-over !default;
+$btn-group-header-background-color: adjust-color($base-color, $hue: -2deg, $saturation: 5%, $lightness: 1%) !default;
+$btn-group-header-color: adjust-color($base-color, $hue: 2.6deg, $saturation: -9%, $lightness: -38.5%) !default;
+$btn-group-inner-border-color: adjust-color($base-color, $saturation: -9%, $lightness: 8.5%) !default;
+$btn-group-border-color: adjust-color($base-color, $hue: -5deg, $saturation: -27%, $lightness: -6%) !default;
+$btn-group-background-color: adjust-color($base-color, $hue: 1deg, $saturation: -4%, $lightness: 3.8%) !default;
+$boundlist-item-over-background-color: adjust-color($base-color, $hue: 3.188deg, $saturation: 0.542%, $lightness: 7.843%) !default;
+$boundlist-item-selected-background-color: darken($boundlist-item-over-background-color, 5) !default;
+$boundlist-item-over-border-color: adjust-color($base-color, $hue: 6.952deg, $saturation: 5.848%, $lightness: -6.471%) !default;
+$boundlist-item-selected-border-color: darken($boundlist-item-over-border-color, 5) !default;
+$boundlist-border-color: adjust-color($base-color, $hue: 0.58deg, $saturation: 25.146%, $lightness: -6.471%) !default;
+$boundlist-background-color: #fff !default;
+$boundlist-item-border-color: $boundlist-background-color !default;
+
+
+.x-body {
+  color: $color;
+}
+.x-focus-frame-top,
+.x-focus-frame-bottom {
+  border-top: solid 2px $focus-frame-color;
+}
+.x-focus-frame-left,
+.x-focus-frame-right {
+  border-left: solid 2px $focus-frame-color;
+}
+.x-mask-msg {
+  border-color: $loadmask-msg-border-color;
+  background: $loadmask-msg-background-color;
+}
+.x-mask-msg div {
+  border: 1px solid $loadmask-msg-inner-border-color;
+  background-color: $loadmask-msg-inner-background-color;
+  color: $loadmask-msg-inner-color;
+}
+.x-boundlist {
+  border-color: $boundlist-border-color;
+  background: $boundlist-background-color;
+}
+.x-boundlist-item {
+  border-color: $boundlist-item-border-color;
+}
+.x-boundlist-selected {
+  background: $boundlist-item-selected-background-color;
+  border-color: $boundlist-item-selected-border-color;
+}
+.x-boundlist-item-over {
+  background: $boundlist-item-over-background-color;
+  border-color: $boundlist-item-over-border-color;
+}
+.x-btn-default-small {
+  border-color: $button-default-border-color;
+}
+.x-btn-default-small {
+  @include background-gradient($button-default-background-color,glossy-button,top);
+}
+.x-nlg .x-btn-default-small-mc {
+  background-color: $button-default-background-color;
+}
+.x-btn-default-small .x-btn-inner {
+  color: $button-default-color;
+}
+.x-btn-default-small-over {
+  border-color: $button-default-border-color-over;
+  @include background-gradient($button-default-background-color-over,glossy-button-over);
+}
+.x-btn-default-small-over .x-btn-inner {
+  color: $button-default-color-over;
+}
+.x-btn-default-small-focus {
+  border-color: $button-default-border-color-focus;
+  @include background-gradient($button-default-background-color-focus,glossy-button-over);
+}
+.x-btn-default-small-focus .x-btn-inner {
+  color: $button-default-color-focus;
+}
+.x-btn-default-small-menu-active,
+.x-btn-default-small-pressed {
+  border-color: $button-default-border-color-pressed;
+  @include background-gradient($button-default-background-color-pressed,glossy-button-pressed);
+}
+.x-btn-default-small-menu-active .x-btn-inner,
+.x-btn-default-small-pressed .x-btn-inner {
+  color: $button-default-color-pressed;
+}
+.x-btn-default-small-disabled {
+  border-color: $button-default-border-color-disabled;
+  @include background-gradient($button-default-background-color-disabled,glossy-button-disabled);
+}
+.x-btn-default-small-disabled .x-btn-inner {
+  color: $button-default-color-disabled !important;
+}
+.x-ie .x-btn-default-small-disabled .x-btn-inner {
+  color: darken($button-default-color-disabled,20) !important;
+}
+.x-ie6 .x-btn-default-small-disabled .x-btn-inner {
+  color: $button-default-color-disabled !important;
+}
+.x-nbr .x-btn-default-small-over .x-frame-mc {
+  background-color: $button-default-background-color-over;
+}
+.x-nbr .x-btn-default-small-focus .x-frame-mc {
+  background-color: $button-default-background-color-focus;
+}
+.x-nbr .x-btn-default-small-menu-active .x-frame-mc,
+.x-nbr .x-btn-default-small-pressed .x-frame-mc {
+  background-color: $button-default-background-color-pressed;
+}
+.x-nbr .x-btn-default-small-disabled .x-frame-mc {
+  background-color: $button-default-background-color-disabled;
+}
+.x-btn-default-medium {
+  border-color: $button-default-border-color;
+}
+.x-btn-default-medium {
+  @include background-gradient($button-default-background-color,glossy-button,top);
+}
+.x-nlg .x-btn-default-medium-mc {
+  background-color: $button-default-background-color;
+}
+.x-btn-default-medium .x-btn-inner {
+  color: $button-default-color;
+}
+.x-btn-default-medium-over {
+  border-color: $button-default-border-color-over;
+  @include background-gradient($button-default-background-color-over,glossy-button-over);
+}
+.x-btn-default-medium-over .x-btn-inner {
+  color: $button-default-color-over;
+}
+.x-btn-default-medium-focus {
+  border-color: $button-default-border-color-focus;
+  @include background-gradient($button-default-background-color-focus,glossy-button-over);
+}
+.x-btn-default-medium-focus .x-btn-inner {
+  color: $button-default-color-focus;
+}
+.x-btn-default-medium-menu-active,
+.x-btn-default-medium-pressed {
+  border-color: $button-default-border-color-pressed;
+  @include background-gradient($button-default-background-color-pressed,glossy-button-pressed);
+}
+.x-btn-default-medium-menu-active .x-btn-inner,
+.x-btn-default-medium-pressed .x-btn-inner {
+  color: $button-default-color-pressed;
+}
+.x-btn-default-medium-disabled {
+  border-color: $button-default-border-color-disabled;
+  @include background-gradient($button-default-background-color-disabled,glossy-button-disabled);
+}
+.x-btn-default-medium-disabled .x-btn-inner {
+  color: $button-default-color-disabled !important;
+}
+.x-ie .x-btn-default-medium-disabled .x-btn-inner {
+  color: darken($button-default-color-disabled,20) !important;
+}
+.x-ie6 .x-btn-default-medium-disabled .x-btn-inner {
+  color: $button-default-color-disabled !important;
+}
+.x-nbr .x-btn-default-medium-over .x-frame-mc {
+  background-color: $button-default-background-color-over;
+}
+.x-nbr .x-btn-default-medium-focus .x-frame-mc {
+  background-color: $button-default-background-color-focus;
+}
+.x-nbr .x-btn-default-medium-menu-active .x-frame-mc,
+.x-nbr .x-btn-default-medium-pressed .x-frame-mc {
+  background-color: $button-default-background-color-pressed;
+}
+.x-nbr .x-btn-default-medium-disabled .x-frame-mc {
+  background-color: $button-default-background-color-disabled;
+}
+.x-btn-default-large {
+  border-color: $button-default-border-color;
+}
+.x-btn-default-large {
+  @include background-gradient($button-default-background-color,glossy-button,top);
+}
+.x-nlg .x-btn-default-large-mc {
+  background-color: $button-default-background-color;
+}
+.x-btn-default-large .x-btn-inner {
+  color: $button-default-color;
+}
+.x-btn-default-large-over {
+  border-color: $button-default-border-color-over;
+  @include background-gradient($button-default-background-color-over,glossy-button-over);
+}
+.x-btn-default-large-over .x-btn-inner {
+  color: $button-default-color-over;
+}
+.x-btn-default-large-focus {
+  border-color: $button-default-border-color-focus;
+  @include background-gradient($button-default-background-color-focus,glossy-button-over);
+}
+.x-btn-default-large-focus .x-btn-inner {
+  color: $button-default-color-focus;
+}
+.x-btn-default-large-menu-active,
+.x-btn-default-large-pressed {
+  border-color: $button-default-border-color-pressed;
+  @include background-gradient($button-default-background-color-pressed,glossy-button-pressed);
+}
+.x-btn-default-large-menu-active .x-btn-inner,
+.x-btn-default-large-pressed .x-btn-inner {
+  color: $button-default-color-pressed;
+}
+.x-btn-default-large-disabled {
+  border-color: $button-default-border-color-disabled;
+  @include background-gradient($button-default-background-color-disabled,glossy-button-disabled);
+}
+.x-btn-default-large-disabled .x-btn-inner {
+  color: $button-default-color-disabled !important;
+}
+.x-ie .x-btn-default-large-disabled .x-btn-inner {
+  color: darken($button-default-color-disabled,20) !important;
+}
+.x-ie6 .x-btn-default-large-disabled .x-btn-inner {
+  color: $button-default-color-disabled !important;
+}
+.x-nbr .x-btn-default-large-over .x-frame-mc {
+  background-color: $button-default-background-color-over;
+}
+.x-nbr .x-btn-default-large-focus .x-frame-mc {
+  background-color: $button-default-background-color-focus;
+}
+.x-nbr .x-btn-default-large-menu-active .x-frame-mc,
+.x-nbr .x-btn-default-large-pressed .x-frame-mc {
+  background-color: $button-default-background-color-pressed;
+}
+.x-nbr .x-btn-default-large-disabled .x-frame-mc {
+  background-color: $button-default-background-color-disabled;
+}
+.x-btn-default-toolbar-small {
+  border-color: $button-toolbar-border-color;
+}
+.x-btn-default-toolbar-small {
+  background-color: $button-toolbar-background-color;
+}
+.x-nlg .x-btn-default-toolbar-small-mc {
+  background-color: $button-toolbar-background-color;
+}
+.x-btn-default-toolbar-small .x-btn-inner {
+  color: $button-toolbar-color;
+}
+.x-btn-default-toolbar-small-over {
+  border-color: $button-toolbar-border-color-over;
+  @include background-gradient($button-toolbar-background-color-over,glossy-button-over);
+}
+.x-btn-default-toolbar-small-over .x-btn-inner {
+  color: $button-toolbar-color-over;
+}
+.x-btn-default-toolbar-small-focus {
+  border-color: $button-toolbar-border-color-focus;
+  @include background-gradient($button-toolbar-background-color-focus,glossy-button-over);
+}
+.x-btn-default-toolbar-small-focus .x-btn-inner {
+  color: $button-toolbar-color-focus;
+}
+.x-btn-default-toolbar-small-menu-active,
+.x-btn-default-toolbar-small-pressed {
+  border-color: $button-toolbar-border-color-pressed;
+  @include background-gradient($button-toolbar-background-color-pressed,glossy-button-pressed);
+}
+.x-btn-default-toolbar-small-menu-active .x-btn-inner,
+.x-btn-default-toolbar-small-pressed .x-btn-inner {
+  color: $button-toolbar-color-pressed;
+}
+.x-btn-default-toolbar-small-disabled {
+  border-color: $button-toolbar-border-color-disabled;
+  @include background-gradient($button-toolbar-background-color-disabled);
+}
+.x-btn-default-toolbar-small-disabled .x-btn-inner {
+  color: $button-toolbar-color-disabled !important;
+}
+.x-ie .x-btn-default-toolbar-small-disabled .x-btn-inner {
+  color: darken($button-toolbar-color-disabled,20) !important;
+}
+.x-ie6 .x-btn-default-toolbar-small-disabled .x-btn-inner {
+  color: $button-toolbar-color-disabled !important;
+}
+.x-nbr .x-btn-default-toolbar-small-over .x-frame-mc {
+  background-color: $button-toolbar-background-color-over;
+}
+.x-nbr .x-btn-default-toolbar-small-focus .x-frame-mc {
+  background-color: $button-toolbar-background-color-focus;
+}
+.x-nbr .x-btn-default-toolbar-small-menu-active .x-frame-mc,
+.x-nbr .x-btn-default-toolbar-small-pressed .x-frame-mc {
+  background-color: $button-toolbar-background-color-pressed;
+}
+.x-nbr .x-btn-default-toolbar-small-disabled .x-frame-mc {
+  background-color: $button-toolbar-background-color-disabled;
+}
+.x-btn-default-toolbar-medium {
+  border-color: $button-toolbar-border-color;
+}
+.x-btn-default-toolbar-medium {
+  background-color: $button-toolbar-background-color;
+}
+.x-nlg .x-btn-default-toolbar-medium-mc {
+  background-color: $button-toolbar-background-color;
+}
+.x-btn-default-toolbar-medium .x-btn-inner {
+  color: $button-toolbar-color;
+}
+.x-btn-default-toolbar-medium-over {
+  border-color: $button-toolbar-border-color-over;
+  @include background-gradient($button-toolbar-background-color-over,glossy-button-over);
+}
+.x-btn-default-toolbar-medium-over .x-btn-inner {
+  color: $button-toolbar-color-over;
+}
+.x-btn-default-toolbar-medium-focus {
+  border-color: $button-toolbar-border-color-focus;
+  @include background-gradient($button-toolbar-background-color-focus,glossy-button-over);
+}
+.x-btn-default-toolbar-medium-focus .x-btn-inner {
+  color: $button-toolbar-color-focus;
+}
+.x-btn-default-toolbar-medium-menu-active,
+.x-btn-default-toolbar-medium-pressed {
+  border-color: $button-toolbar-border-color-pressed;
+  @include background-gradient($button-toolbar-background-color-pressed,glossy-button-pressed);
+}
+.x-btn-default-toolbar-medium-menu-active .x-btn-inner,
+.x-btn-default-toolbar-medium-pressed .x-btn-inner {
+  color: $button-toolbar-color-pressed;
+}
+.x-btn-default-toolbar-medium-disabled {
+  border-color: $button-toolbar-border-color-disabled;
+  @include background-gradient($button-toolbar-background-color-disabled);
+}
+.x-btn-default-toolbar-medium-disabled .x-btn-inner {
+  color: $button-toolbar-color-disabled !important;
+}
+.x-ie .x-btn-default-toolbar-medium-disabled .x-btn-inner {
+  color: darken($button-toolbar-color-disabled,20) !important;
+}
+.x-ie6 .x-btn-default-toolbar-medium-disabled .x-btn-inner {
+  color: $button-toolbar-color-disabled !important;
+}
+.x-nbr .x-btn-default-toolbar-medium-over .x-frame-mc {
+  background-color: $button-toolbar-background-color-over;
+}
+.x-nbr .x-btn-default-toolbar-medium-focus .x-frame-mc {
+  background-color: $button-toolbar-background-color-focus;
+}
+.x-nbr .x-btn-default-toolbar-medium-menu-active .x-frame-mc,
+.x-nbr .x-btn-default-toolbar-medium-pressed .x-frame-mc {
+  background-color: $button-toolbar-background-color-pressed;
+}
+.x-nbr .x-btn-default-toolbar-medium-disabled .x-frame-mc {
+  background-color: $button-toolbar-background-color-disabled;
+}
+.x-btn-default-toolbar-large {
+  border-color: $button-toolbar-border-color;
+}
+.x-btn-default-toolbar-large {
+  background-color: $button-toolbar-background-color;
+}
+.x-nlg .x-btn-default-toolbar-large-mc {
+  background-color: $button-toolbar-background-color;
+}
+.x-btn-default-toolbar-large .x-btn-inner {
+  color: $button-toolbar-color;
+}
+.x-btn-default-toolbar-large-over {
+  border-color: $button-toolbar-border-color-over;
+  @include background-gradient($button-toolbar-background-color-over,glossy-button-over);
+}
+.x-btn-default-toolbar-large-over .x-btn-inner {
+  color: $button-toolbar-color-over;
+}
+.x-btn-default-toolbar-large-focus {
+  border-color: $button-toolbar-border-color-focus;
+  @include background-gradient($button-toolbar-background-color-focus,glossy-button-over);
+}
+.x-btn-default-toolbar-large-focus .x-btn-inner {
+  color: $button-toolbar-color-focus;
+}
+.x-btn-default-toolbar-large-menu-active,
+.x-btn-default-toolbar-large-pressed {
+  border-color: $button-toolbar-border-color-pressed;
+  @include background-gradient($button-toolbar-background-color-pressed,glossy-button-pressed);
+}
+.x-btn-default-toolbar-large-menu-active .x-btn-inner,
+.x-btn-default-toolbar-large-pressed .x-btn-inner {
+  color: $button-toolbar-color-pressed;
+}
+.x-btn-default-toolbar-large-disabled {
+  border-color: $button-toolbar-border-color-disabled;
+  @include background-gradient($button-toolbar-background-color-disabled);
+}
+.x-btn-default-toolbar-large-disabled .x-btn-inner {
+  color: $button-toolbar-color-disabled !important;
+}
+.x-ie .x-btn-default-toolbar-large-disabled .x-btn-inner {
+  color: darken($button-toolbar-color-disabled,20) !important;
+}
+.x-ie6 .x-btn-default-toolbar-large-disabled .x-btn-inner {
+  color: $button-toolbar-color-disabled !important;
+}
+.x-nbr .x-btn-default-toolbar-large-over .x-frame-mc {
+  background-color: $button-toolbar-background-color-over;
+}
+.x-nbr .x-btn-default-toolbar-large-focus .x-frame-mc {
+  background-color: $button-toolbar-background-color-focus;
+}
+.x-nbr .x-btn-default-toolbar-large-menu-active .x-frame-mc,
+.x-nbr .x-btn-default-toolbar-large-pressed .x-frame-mc {
+  background-color: $button-toolbar-background-color-pressed;
+}
+.x-nbr .x-btn-default-toolbar-large-disabled .x-frame-mc {
+  background-color: $button-toolbar-background-color-disabled;
+}
+.x-btn-group-default-framed {
+  background-color: $btn-group-background-color;
+}
+.x-nlg .x-btn-group-default-framed-mc {
+  background-color: $btn-group-background-color;
+}
+.x-btn-group-default-framed {
+  border-color: $btn-group-border-color;
+  -webkit-box-shadow: $btn-group-inner-border-color 0 1px 0px 0 inset, $btn-group-inner-border-color 0 -1px 0px 0 inset, $btn-group-inner-border-color -1px 0 0px 0 inset, $btn-group-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $btn-group-inner-border-color 0 1px 0px 0 inset, $btn-group-inner-border-color 0 -1px 0px 0 inset, $btn-group-inner-border-color -1px 0 0px 0 inset, $btn-group-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $btn-group-inner-border-color 0 1px 0px 0 inset, $btn-group-inner-border-color 0 -1px 0px 0 inset, $btn-group-inner-border-color -1px 0 0px 0 inset, $btn-group-inner-border-color 1px 0 0px 0 inset;
+}
+.x-btn-group-header-body-default-framed {
+  background: $btn-group-header-background-color;
+}
+.x-btn-group-header-text-default-framed {
+  color: $btn-group-header-color;
+}
+.x-datepicker {
+  border: 1px solid $datepicker-border-color;
+  background-color: $datepicker-background-color;
+}
+.x-datepicker a {
+  color: $datepicker-monthpicker-item-color;
+}
+.x-datepicker-header {
+  @include background-gradient($datepicker-header-background-color,matte);
+}
+.x-datepicker-month button {
+  color: $datepicker-monthpicker-color !important;
+}
+table.x-datepicker-inner th {
+  color: $datepicker-th-color;
+  border-bottom: 1px solid $datepicker-th-border-bottom-color;
+  @include background-gradient($datepicker-th-background-color,matte);
+}
+table.x-datepicker-inner td {
+  border-color: $datepicker-background-color;
+}
+table.x-datepicker-inner a {
+  color: $datepicker-item-color;
+}
+table.x-datepicker-inner .x-datepicker-selected a {
+  background-color: $datepicker-selected-item-background-color;
+  border: 1px solid $datepicker-selected-item-border-color;
+}
+table.x-datepicker-inner .x-datepicker-today a {
+  border-color: $datepicker-today-item-border-color;
+}
+table.x-datepicker-inner a:hover,
+table.x-datepicker-inner .x-datepicker-disabled a:hover {
+  background-color: $datepicker-item-hover-background-color;
+}
+.x-datepicker-footer,
+.x-monthpicker-buttons {
+  border-top: 1px solid $datepicker-footer-border-top-color;
+  @include background-gradient($datepicker-footer-background-color,color_stops(adjust-color($datepicker-base-color,$hue:0.58deg,$saturation: -2.067%,$lightness: 7.451%),adjust-color($datepicker-base-color,$hue:-0.43deg,$saturation: -4.736%,$lightness: 3.922%) 49%,adjust-color($datepicker-base-color,$hue:-0.175deg,$saturation: -4.204%,$lightness: 1.373%) 51%,adjust-color($datepicker-base-color,$hue:0.952deg,$saturation: -4.831%,$lightness: 2.353%)));
+}
+.x-monthpicker {
+  border: 1px solid $datepicker-border-color;
+  background-color: $datepicker-background-color;
+}
+.x-monthpicker-item a {
+  color: $datepicker-monthpicker-item-color;
+  border: 1px solid $datepicker-item-border-color;
+}
+.x-monthpicker-item a:hover {
+  background-color: $datepicker-monthpicker-item-hover-background-color;
+}
+.x-monthpicker-item a.x-monthpicker-selected {
+  background-color: $datepicker-monthpicker-item-selected-background-color;
+  border: 1px solid $datepicker-selected-item-border-color;
+}
+.x-monthpicker-months {
+  border-right: 1px solid $datepicker-border-color;
+}
+.x-color-picker a:hover,
+.x-color-picker a.x-color-picker-selected {
+  border-color: $colorpicker-over-border-color;
+  background-color: $colorpicker-over-background-color;
+}
+.x-color-picker em {
+  border: 1px solid $colorpicker-item-border-color;
+}
+.x-menu-body {
+  background: $menu-background-color !important;
+}
+.x-menu-icon-separator {
+  border-left: solid 1px $menu-separator-border-color;
+  background-color: $menu-separator-background-color;
+}
+.x-menu-item-text {
+  color: $menu-text-color;
+}
+.x-menu-item-separator {
+  border-top: solid 1px $menu-separator-border-color;
+  background-color: $menu-separator-background-color;
+}
+.x-menu-item-active .x-menu-item-link {
+  @include background-gradient($menu-item-active-background-color,matte);
+  border: 1px solid $menu-item-active-border-color;
+}
+.x-nlg .x-menu-item-active .x-menu-item-link {
+  background: $menu-item-active-background-color repeat-x left top;
+}
+.x-menu-item .x-form-item-label {
+  color: $menu-text-color;
+}
+.x-panel .x-grid-body {
+  background: $panel-body-background-color;
+  border-color: $panel-body-border-color;
+  border-top-color: $grid-header-background-color;
+}
+.x-grid-header-hidden .x-grid-body {
+  border-top-color: $panel-body-border-color !important;
+}
+.x-grid-header-ct {
+  border: 1px solid $panel-body-border-color;
+  border-bottom-color: $grid-header-background-color;
+  @include background-gradient($grid-header-background-color,grid-header);
+}
+.x-column-header {
+  border-right: 1px solid $grid-header-background-color;
+  color: $grid-header-color;
+  @include background-gradient($grid-header-background-color,grid-header);
+}
+.x-group-sub-header {
+  border-top: 1px solid $grid-header-background-color;
+}
+.x-column-header-over,
+.x-column-header-sort-ASC,
+.x-column-header-sort-DESC {
+  border-left-color: $grid-header-over-border-color;
+  border-right-color: $grid-header-over-border-color;
+  @include background-gradient($grid-header-over-background-color,grid-header-over);
+}
+.x-grid-row .x-grid-cell {
+  color: $grid-row-cell-color;
+  border-color: $grid-row-cell-border-color;
+  border-top-color: lighten($grid-row-cell-border-color,5);
+}
+.x-grid-rowwrap-div {
+  border-color: $grid-row-wrap-border-color;
+  border-top-color: lighten($grid-row-wrap-border-color,5);
+}
+.x-grid-row-over .x-grid-cell,
+.x-grid-row-over .x-grid-rowwrap-div {
+  border-color: $grid-row-cell-over-border-color;
+  background-color: $grid-row-cell-over-background-color;
+}
+.x-grid-row-focused .x-grid-cell,
+.x-grid-row-focused .x-grid-rowwrap-div {
+  border-color: $grid-row-cell-focus-border-color;
+  background-color: $grid-row-cell-focus-background-color;
+}
+.x-grid-row-selected .x-grid-cell,
+.x-grid-row-selected .x-grid-rowwrap-div,
+.x-grid-row-selected .x-grid-cell-rowbody {
+  background-color: $grid-row-cell-selected-background-color !important;
+}
+.x-grid-row-selected .x-grid-cell {
+  border-color: $grid-row-cell-selected-border-color;
+}
+.x-grid-row .x-grid-cell-special {
+  border-right: 1px solid $grid-cell-with-col-lines-border-color;
+}
+.x-grid-row-selected .x-grid-cell-special {
+  border-right: 1px solid adjust-color($base-color,$hue:-0.175deg,$saturation: 25.296%,$lightness: -2.549%);
+  @include background-gradient($grid-row-cell-selected-background-color,grid-cell-special);
+}
+.x-grid-with-col-lines .x-grid-cell {
+  border-right: 1px solid $grid-cell-with-col-lines-border-color;
+}
+.x-grid-group-hd .x-grid-cell-inner {
+  background: $grid-grouped-header-background-color;
+  border-color: $grid-grouped-header-border-color;
+}
+.x-grid-group-title {
+  color: $grid-grouped-title-color;
+}
+.x-grid-row-editor .x-panel-body {
+  background-color: $grid-row-editor-background-color;
+  border-top: 1px solid $grid-row-editor-border-color !important;
+  border-bottom: 1px solid $grid-row-editor-border-color !important;
+}
+.x-grid-row-editor-buttons {
+  background-color: $grid-row-editor-background-color;
+}
+.x-grid-row-editor-buttons-bc {
+  background-color: $grid-row-editor-border-color;
+}
+.x-grid-row-editor-buttons-ml,
+.x-grid-row-editor-buttons-mr {
+  background-color: $grid-row-editor-border-color;
+}
+.x-form-invalid-under {
+  color: $form-error-msg-color;
+}
+.x-form-field,
+.x-form-display-field {
+  color: $form-field-color;
+}
+.x-form-text,
+textarea.x-form-field {
+  background-color: $form-field-background-color;
+  border-color: $form-field-border-color;
+}
+textarea.x-form-field {
+  color: $form-field-color;
+  background-color: $form-field-background-color;
+}
+.x-form-focus,
+textarea.x-form-focus {
+  border-color: $form-field-focus-border-color;
+}
+.x-form-invalid-field,
+textarea.x-form-invalid-field {
+  background-color: $form-field-invalid-background-color;
+  border-color: $form-field-invalid-border-color;
+}
+.x-form-empty-field, textarea.x-form-empty-field {
+  color: $form-field-empty-color;
+}
+.x-fieldset {
+  border: 1px solid $fieldset-border-color;
+}
+.x-fieldset-header {
+  color: $fieldset-header-color;
+}
+.x-check-group-alt {
+  background: adjust-color($base-color,$hue:2.667deg,$saturation: -7.168%,$lightness: 3.725%);
+  border-top: 1px dotted adjust-color($base-color,$hue:17.193deg,$saturation: -40.827%,$lightness: -9.412%);
+  border-bottom: 1px dotted adjust-color($base-color,$hue:17.193deg,$saturation: -40.827%,$lightness: -9.412%);
+}
+.x-form-trigger {
+  border-bottom: 1px solid $form-trigger-border-bottom-color;
+}
+.x-form-trigger-over {
+  border-bottom-color: $form-trigger-border-bottom-color-over;
+}
+.x-form-trigger-wrap-focus .x-form-trigger {
+  border-bottom-color: $form-trigger-border-bottom-color-focus;
+}
+.x-form-trigger-wrap-focus .x-form-trigger-over {
+  border-bottom-color: $form-trigger-border-bottom-color-focus-over;
+}
+.x-form-trigger-click,
+.x-form-trigger-wrap-focus .x-form-trigger-click {
+  border-bottom-color: $form-trigger-border-bottom-color-pressed;
+}
+.x-html-editor-wrap {
+  border: 1px solid $html-editor-border-color;
+}
+.x-html-editor-wrap textarea {
+  background-color: $html-editor-background-color;
+}
+.x-ie9m .x-panel-header-vertical .x-panel-header-text-container {
+  background: $panel-header-background-color;
+}
+.x-ie9m .x-window-header-vertical .x-window-header-text-container {
+  background: $window-background-color;
+}
+.x-panel-default {
+  border-color: $panel-border-color;
+}
+.x-panel-header-default {
+  border-color: $panel-header-border-color;
+  @include background-gradient($panel-header-background-color,panel-header);
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+}
+.x-panel-header-text-default {
+  color: $panel-header-color;
+}
+.x-panel-body-default {
+  background: $panel-body-background-color;
+  border-color: $panel-body-border-color;
+  color: $panel-body-color;
+}
+.x-panel-collapsed .x-window-header-default,
+.x-panel-collapsed .x-panel-header-default {
+  border-color: $panel-body-border-color;
+}
+.x-panel-header-default-vertical {
+  border-color: $panel-body-border-color;
+}
+.x-panel-header-default-left,
+.x-panel-header-default-right {
+  @include background-gradient($panel-header-background-color,panel-header,right);
+}
+.x-panel-header-default-top {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+}
+.x-panel-header-default-right {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) -1px 0 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) -1px 0 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) -1px 0 0px 0 inset;
+}
+.x-panel-header-default-bottom {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 -1px 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 -1px 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 -1px 0px 0 inset;
+}
+.x-panel-header-default-left {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+}
+.x-panel-default-framed {
+  border-color: $panel-frame-border-color;
+}
+.x-panel-header-default-framed {
+  border-color: $panel-frame-border-color;
+  @include background-gradient($panel-header-background-color,panel-header);
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset;
+}
+.x-panel-header-text-default-framed {
+  color: $panel-header-color;
+}
+.x-panel-body-default-framed {
+  background: $panel-frame-background-color;
+  border-color: $panel-body-border-color;
+  color: $panel-body-color;
+}
+.x-panel-collapsed .x-window-header-default-framed,
+.x-panel-collapsed .x-panel-header-default-framed {
+  border-color: $panel-body-border-color;
+}
+.x-panel-header-default-framed-vertical {
+  border-color: $panel-body-border-color;
+}
+.x-panel-header-default-framed-left,
+.x-panel-header-default-framed-right {
+  @include background-gradient($panel-header-background-color,panel-header,right);
+}
+.x-panel-default-framed {
+  background-color: $panel-frame-background-color;
+}
+.x-nlg .x-panel-default-framed-mc {
+  background-color: $panel-frame-background-color;
+}
+.x-panel-header-default-framed-top {
+  @include background-gradient($panel-header-background-color,panel-header,top);
+}
+.x-nlg .x-panel-header-default-framed-top-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-right {
+  @include background-gradient($panel-header-background-color,panel-header,right);
+}
+.x-nlg .x-panel-header-default-framed-right-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-bottom {
+  @include background-gradient($panel-header-background-color,panel-header,top);
+}
+.x-nlg .x-panel-header-default-framed-bottom-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-left {
+  @include background-gradient($panel-header-background-color,panel-header,right);
+}
+.x-nlg .x-panel-header-default-framed-left-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-top {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+}
+.x-panel-header-default-framed-right {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset;
+}
+.x-panel-header-default-framed-bottom {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) -1px 0 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+}
+.x-panel-header-default-framed-left {
+  -webkit-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  -moz-box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+  box-shadow: lighten($panel-header-background-color,10) 0 1px 0px 0 inset, lighten($panel-header-background-color,10) 0 -1px 0px 0 inset, lighten($panel-header-background-color,10) 1px 0 0px 0 inset;
+}
+.x-panel-header-default-framed-collapsed-top {
+  @include background-gradient($panel-header-background-color,panel-header,top);
+}
+.x-nlg .x-panel-header-default-framed-collapsed-top-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-collapsed-right {
+  @include background-gradient($panel-header-background-color,panel-header,right);
+}
+.x-nlg .x-panel-header-default-framed-collapsed-right-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-collapsed-bottom {
+  @include background-gradient($panel-header-background-color,panel-header,top);
+}
+.x-nlg .x-panel-header-default-framed-collapsed-bottom-mc {
+  background-color: $panel-header-background-color;
+}
+.x-panel-header-default-framed-collapsed-left {
+  @include background-gradient($panel-header-background-color,panel-header,right);
+}
+.x-nlg .x-panel-header-default-framed-collapsed-left-mc {
+  background-color: $panel-header-background-color;
+}
+.x-tip {
+  border-color: $tip-border-color;
+}
+.x-tip {
+  background-color: $tip-background-color;
+}
+.x-nlg .x-tip-mc {
+  background-color: $tip-background-color;
+}
+.x-tip-header-text {
+  color: $tip-header-color;
+}
+.x-tip-header,
+.x-tip-body,
+.x-form-invalid-tip-body {
+  color: $tip-body-color;
+}
+.x-tip-header a,
+.x-tip-body a,
+.x-form-invalid-tip-body a {
+  color: $tip-body-link-color;
+}
+.x-tip-anchor {
+  border-color: $tip-border-color;
+}
+.x-form-invalid-tip {
+  border-color: $tip-error-border-color;
+  -webkit-box-shadow: $tip-error-inner-border-color 0 1px 0px 0 inset, $tip-error-inner-border-color 0 -1px 0px 0 inset, $tip-error-inner-border-color -1px 0 0px 0 inset, $tip-error-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $tip-error-inner-border-color 0 1px 0px 0 inset, $tip-error-inner-border-color 0 -1px 0px 0 inset, $tip-error-inner-border-color -1px 0 0px 0 inset, $tip-error-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $tip-error-inner-border-color 0 1px 0px 0 inset, $tip-error-inner-border-color 0 -1px 0px 0 inset, $tip-error-inner-border-color -1px 0 0px 0 inset, $tip-error-inner-border-color 1px 0 0px 0 inset;
+}
+.x-form-invalid-tip-default {
+  background-color: $tip-error-background-color;
+}
+.x-nlg .x-form-invalid-tip-default-mc {
+  background-color: $tip-error-background-color;
+}
+.x-progress-default {
+  border-color: $progress-border-color;
+}
+.x-progress-default .x-progress-bar {
+  border-right-color: $progress-border-color;
+  border-top-color: lighten($progress-border-color,25);
+  @include background-gradient($progress-bar-background-color,glossy);
+}
+.x-progress-default .x-progress-text {
+  color: $progress-text-color-front;
+}
+.x-progress-default .x-progress-text-back {
+  color: $progress-text-color-back;
+}
+.x-toolbar .x-toolbar-text {
+  color: $toolbar-text-color;
+}
+.x-toolbar .x-toolbar-separator-horizontal {
+  border-left: 1px solid $toolbar-separator-color;
+  border-right: 1px solid $toolbar-separator-highlight-color;
+}
+.x-toolbar-vertical .x-toolbar-separator-vertical {
+  border-top: 1px solid $toolbar-separator-color;
+  border-bottom: 1px solid $toolbar-separator-highlight-color;
+}
+.x-toolbar-default {
+  border-color: $toolbar-border-color;
+  @include background-gradient($toolbar-background-color,color_stops(lighten($toolbar-background-color,3),$toolbar-background-color));
+}
+.x-window-default {
+  border-color: $window-border-color;
+  -webkit-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+}
+.x-window-default {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-default-mc {
+  background-color: $window-background-color;
+}
+.x-window-body-default {
+  border-color: $window-body-border-color;
+  background: $window-body-background-color;
+  color: $window-body-color;
+}
+.x-window-header-default {
+  border-color: $window-border-color;
+}
+.x-window-header-text-default {
+  color: $window-header-color;
+}
+.x-window-header-default-top {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-top-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-right {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-right-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-bottom {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-bottom-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-left {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-left-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-collapsed-top {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-collapsed-top-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-collapsed-right {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-collapsed-right-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-collapsed-bottom {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-collapsed-bottom-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-collapsed-left {
+  background-color: $window-background-color;
+}
+.x-nlg .x-window-header-default-collapsed-left-mc {
+  background-color: $window-background-color;
+}
+.x-window-header-default-top {
+  -webkit-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+}
+.x-window-header-default-right {
+  -webkit-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset;
+  -moz-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset;
+  box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset;
+}
+.x-window-header-default-bottom {
+  -webkit-box-shadow: $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color -1px 0 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+}
+.x-window-header-default-left {
+  -webkit-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $window-inner-border-color 0 1px 0px 0 inset, $window-inner-border-color 0 -1px 0px 0 inset, $window-inner-border-color 1px 0 0px 0 inset;
+}
+.x-message-box .x-window-body {
+  background-color: $window-background-color;
+}
+.x-tab-bar {
+  @include background-gradient($tabbar-base-color,tabbar);
+}
+.x-tab-bar-body {
+  border-color: $tabbar-border-color;
+}
+.x-tab-bar-strip-default,
+.x-tab-bar-strip-default-plain {
+  border-color: $tabbar-strip-border-color;
+  background-color: $tabbar-strip-background-color;
+}
+.x-tab-default-top {
+  @include background-gradient($tab-base-color,tab,top);
+}
+.x-nlg .x-tab-default-top-mc {
+  background-color: $tab-base-color;
+}
+.x-tab-default-bottom {
+  @include background-gradient($tab-base-color,tab,bottom);
+}
+.x-nlg .x-tab-default-bottom-mc {
+  background-color: $tab-base-color;
+}
+.x-tab {
+  border-color: $tab-border-color;
+}
+.x-tab button {
+  color: $tab-color;
+}
+.x-tab-default-top {
+  -webkit-box-shadow: $tab-inner-border-color 0 1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $tab-inner-border-color 0 1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $tab-inner-border-color 0 1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  border-bottom: 1px solid $tabbar-strip-border-color !important;
+}
+.x-tab-default-top-active {
+  border-bottom-color: $tabbar-strip-background-color !important;
+}
+.x-tab-default-bottom {
+  -webkit-box-shadow: $tab-inner-border-color 0 -1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $tab-inner-border-color 0 -1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $tab-inner-border-color 0 -1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  border-top: 1px solid $tabbar-strip-border-color !important;
+  -webkit-box-shadow: $tab-inner-border-color 0 -1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  -moz-box-shadow: $tab-inner-border-color 0 -1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+  box-shadow: $tab-inner-border-color 0 -1px 0px 0 inset, $tab-inner-border-color -1px 0 0px 0 inset, $tab-inner-border-color 1px 0 0px 0 inset;
+}
+.x-tab-default-bottom-active {
+  border-top-color: $tabbar-strip-background-color !important;
+}
+.x-tab-default-disabled {
+  border-color: $tab-border-color-disabled;
+  @include background-gradient($tab-base-color-disabled,tab-disabled);
+}
+.x-tab-default-disabled button {
+  color: $tab-color-disabled !important;
+}
+.x-tab-over {
+  border-color: $tab-border-color-over;
+}
+.x-tab-over button {
+  color: $tab-color-over;
+}
+.x-tab-top-over {
+  @include background-gradient($tab-base-color-over,tab-over,top);
+}
+.x-tab-bottom-over {
+  @include background-gradient($tab-base-color-over,tab-over,bottom);
+}
+.x-tab-active {
+  border-color: $tab-border-color-active;
+}
+.x-tab-active button {
+  color: $tab-color-active;
+}
+.x-tab-top-active {
+  @include background-gradient($tab-base-color-active,tab-active,top);
+}
+.x-tab-bottom-active {
+  @include background-gradient($tab-base-color-active,tab-active,bottom);
+}
+.x-tab-disabled {
+  border-color: $tab-border-color-disabled;
+}
+.x-tab-disabled button {
+  color: $tab-color-disabled;
+}
+.x-tab-top-disabled {
+  @include background-gradient($tab-base-color-disabled,tab-disabled,top);
+}
+.x-tab-bottom-disabled {
+  @include background-gradient($tab-base-color-disabled,tab-disabled,bottom);
+}
+.x-nbr .x-tab-top-over .x-frame-mc {
+  background-color: $tab-base-color-over;
+}
+.x-nbr .x-tab-bottom-over .x-frame-mc {
+  background-color: $tab-base-color-over;
+}
+.x-nbr .x-tab-top-active .x-frame-mc {
+  background-color: $tab-base-color-active;
+}
+.x-nbr .x-tab-bottom-active .x-frame-mc {
+  background-color: $tab-base-color-active;
+}
+.x-border-layout-ct {
+  background-color: adjust-color($base-color,$hue:3.188deg,$saturation: 0.542%,$lightness: 7.843%);
+}
+.x-accordion-hd .x-panel-header-text {
+  color: $accordion-header-color;
+}
+.x-accordion-hd {
+  background: $accordion-header-background-color !important;
+  -webkit-box-shadow: inset 0 0 0 0 $accordion-header-background-color;
+  -moz-box-shadow: inset 0 0 0 0 $accordion-header-background-color;
+  box-shadow: inset 0 0 0 0 $accordion-header-background-color;
+}
+.x-accordion-hd {
+  border-top-color: $panel-header-inner-border-color !important;
+}
+.x-accordion-hd-sibling-expanded {
+  border-top-color: $panel-border-color !important;
+  -webkit-box-shadow: inset 0 1px 0 0 $panel-header-inner-border-color;
+  -moz-box-shadow: inset 0 1px 0 0 $panel-header-inner-border-color;
+  box-shadow: inset 0 1px 0 0 $panel-header-inner-border-color;
+}
+.x-accordion-hd-last-collapsed {
+  border-bottom-color: $accordion-header-background-color !important;
+}
+.x-scroller-vertical {
+  border: 1px solid $panel-border-color;
+  border-top-color: $grid-header-background-color;
+}
+.x-scroller-horizontal {
+  border: 1px solid $panel-border-color;
+}
